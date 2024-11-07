@@ -12,7 +12,7 @@ import { LazyPage2 } from './component/LazyPage2';
 import { LazyPage3 } from './component/LazyPage3';
 
 const App = () => (
-  <BrowserRouter basename="/taskly">
+  <BrowserRouter basename="/Taskly">
     <CustomLayout>
       <Routes>
         <Route path="/landing" element={<LazyLanding />} />

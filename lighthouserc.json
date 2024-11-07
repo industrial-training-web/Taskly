@@ -2,7 +2,7 @@
   "ci": {
     "collect": {
       "numberOfRuns": 2,
-      "url": ["http://localhost:3000/taskly"]
+      "url": ["http://localhost:3000/Taskly"]
     },
     "output": [
       "html",
