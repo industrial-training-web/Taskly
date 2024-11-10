@@ -9,8 +9,12 @@ const CustomHeader = () => {
   const navigate = useNavigate();
   return (
     <PageHeader
-      className="site-page-header h-full "
-      title={<Link to="/">Taskly</Link>}
+      className="site-page-header h-full"
+      title={
+        <Link to="/" className="text-2xl">
+          Taskly
+        </Link>
+      }
       subTitle="Free, Open-Sourced, Offline, Self-Hosted Task Management Solution"
       onBack={() => navigate(-1)}
       // extra={

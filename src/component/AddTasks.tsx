@@ -15,7 +15,7 @@ const dateFormatList = ["DD-MM-YYYY"];
 
 const { TextArea } = Input;
 const AddTasks = () => (
-  <div className="bg-[F5F5F5] max-h-screen py-4 md:px-24">
+  <div className="bg-[F5F5F5] max-h-screen py-4 px-24">
     <header className="flex justify-between  items-center">
       <span className="text-[#3B3838] font-bold text-2xl">Add Tasks</span>
     </header>
