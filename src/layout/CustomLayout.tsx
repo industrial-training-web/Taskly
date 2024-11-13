@@ -33,8 +33,12 @@ const CustomFooter = () => (
       {/* @ts-ignore */}
       {__HEAD_COMMIT_HASH__ ? `Trace: ${__HEAD_COMMIT_HASH__}` : ""}
     </div>
-    <div>Developed by Ramisa Zahara Matin</div>
-    <div>&copy; {new Date().getFullYear()} - Industrial Training Web</div>
+    <div>
+      developed by Ramisa 
+    </div>
+    <div>
+      &copy; {new Date().getFullYear()} - Industrial Training Web
+    </div>
   </div>
 );
 
