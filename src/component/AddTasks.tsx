@@ -4,7 +4,7 @@ import type { DatePickerProps } from "antd";
 import { DatePicker } from "antd";
 import { Checkbox } from "antd";
 
-const onCheck = (e) => {
+const onCheck = (e: { target: { checked: any } }) => {
   console.log(`checked = ${e.target.checked}`);
 };
 

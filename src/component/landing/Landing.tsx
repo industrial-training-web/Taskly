@@ -2,7 +2,7 @@ import { Button, Checkbox } from "antd";
 import React from "react";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
-const onCheck = (e) => {
+const onCheck = (e: { target: { checked: any } }) => {
   console.log(`checked = ${e.target.checked}`);
 };
 
