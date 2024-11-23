@@ -1,5 +1,6 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { Checkbox } from "antd";
-import { React, useState } from "react";
+import { useState } from "react";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Avatar, List } from "antd";
 
@@ -27,11 +28,8 @@ const data = [
 ];
 
 const Tasks = () => {
-  const [isChecked, setIsChecked] = useState(false);
-
   const onCheck = (mouseClickEvent: { target: { checked: any } }) => {
     console.log(`checked = ${mouseClickEvent.target.checked}`);
-    setIsChecked(!isChecked);
   };
   return (
     <div>
