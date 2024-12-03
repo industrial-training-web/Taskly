@@ -7,6 +7,48 @@ import { CloudSyncOutlined } from "@ant-design/icons";
 const { TextArea } = Input;
 
 const AddTasks = () => {
+  const addToIndexedDb = () => {
+    const request: IDBOpenDBRequest = window.indexedDB.open("taskly", 1);
+
+    request.onerror = (event: Event) => {
+      console.error("Error opening IndexedDB:", event);
+    };
+
+    request.onsuccess = (_) => {
+      const db: IDBDatabase = request.result;
+      const transaction: IDBTransaction = db.transaction(
+        ["tasks"],
+        "readwrite"
+      );
+      const objectStore: IDBObjectStore = transaction.objectStore("tasks");
+
+      const timeStamp = Date.now();
+      const task = {
+        title: `Task 1 ${timeStamp}`,
+        description: "Task 1 Description",
+        deadline: "2022-12-12",
+        visibleToPublic: true,
+      };
+
+      const addRequest: IDBRequest<IDBValidKey> = objectStore.add(task);
+
+      addRequest.onsuccess = (_) => {
+        console.log("Task has been added to your database.");
+      };
+
+      addRequest.onerror = (event: Event) => {
+        console.error("Error adding task:", event);
+      };
+    };
+
+    request.onupgradeneeded = (_) => {
+      const db: IDBDatabase = request.result;
+      if (!db.objectStoreNames.contains("tasks")) {
+        db.createObjectStore("tasks", { keyPath: "title" });
+      }
+    };
+  };
+
   const onCheck = (mouseClickEvent: { target: { checked: any } }) => {
     console.log(`checked = ${mouseClickEvent.target.checked}`);
   };
@@ -54,7 +96,12 @@ const AddTasks = () => {
           Visible to Public
         </Checkbox>
         <div className="pt-6 ">
-          <Button className="text-white bg-gray-800 rounded-xl md:w-[555px] w-[400px] p-5 flex items-center justify-center">
+          <Button
+            onClick={() => {
+              addToIndexedDb();
+            }}
+            className="text-white bg-gray-800 rounded-xl md:w-[555px] w-[400px] p-5 flex items-center justify-center"
+          >
             Add
           </Button>
         </div>

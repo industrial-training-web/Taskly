@@ -1,33 +1,71 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { Checkbox } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Avatar, List } from "antd";
 
-const data = [
-  {
-    title: "Home Work",
-    description:
-      "Ant Design, a design language for background applications, is refined by Ant UED Team",
-  },
-  {
-    title: "Complete Task 1",
-    description:
-      "Ant Design, a design language for background applications, is refined by Ant UED Team",
-  },
-  {
-    title: "Complete Project 2",
-    description:
-      "Ant Design, a design language for background applications, is refined by Ant UED Team",
-  },
-  {
-    title: "Complete Project 3",
-    description:
-      "Ant Design, a design language for background applications, is refined by Ant UED Team",
-  },
-];
+interface Task {
+  title: string;
+  description: string;
+  deadline: string;
+  visibleToPublic: boolean;
+}
 
 const Tasks = () => {
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const listAllTasksFromIndexedDb = (): Promise<Task[]> =>
+    new Promise((resolve, reject) => {
+      const request: IDBOpenDBRequest = window.indexedDB.open("taskly", 1);
+
+      request.onerror = (event: Event) => {
+        console.error("Error opening IndexedDB:", event);
+        reject(new Error("Failed to open IndexedDB."));
+      };
+
+      request.onsuccess = () => {
+        const db: IDBDatabase = request.result;
+
+        const transaction: IDBTransaction = db.transaction(
+          ["tasks"],
+          "readonly"
+        );
+        const objectStore: IDBObjectStore = transaction.objectStore("tasks");
+
+        const tasks: Task[] = [];
+        const cursorRequest: IDBRequest<IDBCursorWithValue | null> =
+          objectStore.openCursor();
+
+        cursorRequest.onsuccess = () => {
+          const cursor: IDBCursorWithValue | null = cursorRequest.result;
+
+          if (cursor) {
+            tasks.push(cursor.value as Task);
+            cursor.continue();
+          } else {
+            resolve(tasks);
+          }
+        };
+
+        cursorRequest.onerror = (event: Event) => {
+          console.error("Error fetching tasks:", event);
+          reject(new Error("Failed to fetch tasks."));
+        };
+      };
+
+      request.onupgradeneeded = () => {
+        const db: IDBDatabase = request.result;
+        if (!db.objectStoreNames.contains("tasks")) {
+          db.createObjectStore("tasks", { keyPath: "title" });
+        }
+      };
+    });
+
+  useEffect(() => {
+    listAllTasksFromIndexedDb().then((tasks) => {
+      setTasks(tasks);
+    });
+  }, []);
+
   const onCheck = (mouseClickEvent: { target: { checked: any } }) => {
     console.log(`checked = ${mouseClickEvent.target.checked}`);
   };
@@ -35,7 +73,7 @@ const Tasks = () => {
     <div>
       <List
         itemLayout="horizontal"
-        dataSource={data}
+        dataSource={tasks}
         renderItem={(item, index) => (
           <List.Item>
             <List.Item.Meta
