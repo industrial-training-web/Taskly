@@ -13,8 +13,8 @@ interface Task {
 
 const Tasks = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
-  const listAllTasksFromIndexedDb = (): Promise<Task[]> =>
-    new Promise((resolve, reject) => {
+  const listAllTasksFromIndexedDb = (): Promise<Task[]> => {
+    return new Promise((resolve, reject) => {
       const request: IDBOpenDBRequest = window.indexedDB.open("taskly", 1);
 
       request.onerror = (event: Event) => {
@@ -59,6 +59,7 @@ const Tasks = () => {
         }
       };
     });
+  };
 
   useEffect(() => {
     listAllTasksFromIndexedDb().then((tasks) => {
