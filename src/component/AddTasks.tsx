@@ -24,7 +24,7 @@ const AddTasks = () => (
         <span className="text-[#868585] text-xl font-semibold">
           Title <span className="text-[#FB7474]">*</span>
         </span>
-        <Input className="w-[555px] h-10" />
+        <Input className="w-[555px] h-10"></Input>
       </div>
       <div className=" grid gap-2">
         <span className="text-[#868585] text-xl font-semibold">
